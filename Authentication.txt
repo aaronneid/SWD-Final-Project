@@ -1,4 +1,5 @@
-Name Password Rank
-admin 123 admin
-courier 1234 courier
-customer 12345 customer
+Name|Password|Rank|
+admin|123|admin|
+courier|1234|courier|
+customer|12345|customer|
+Aaron Neidlinger|password|admin|

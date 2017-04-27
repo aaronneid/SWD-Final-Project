@@ -1,3 +1,4 @@
+#include"Miscellaneous.h"
 
 #ifndef __Admin_h_INCLUDED__
 #define __Admin_h_INCLUDED__
@@ -25,26 +26,44 @@ Admin::Admin(){
 }
 
 void Admin::trackOrder(string orderNum){
-	string order,x,location,status;
+	string word;
 
 	ifstream fileIn("Orders.txt");
 	if(fileIn.fail()){
 		cout << "No order tracking could be performed! File does not exist!" << endl;
 		exit(0);
-	}
-	
-	while(!fileIn.eof()){
-		fileIn >> order >> x >> location >> x >> x >> status;
-		if(orderNum == order){
-			cout << "Order Number: " << order << endl;
-			cout << "Package Location: " << location << endl;
-			cout << "Order Status: " << status << endl;
+	} else
+		
+	//implicit call to good
+	while(fileIn){
+		stringstream inputStream;
+		string temp;
+		vector<string> order;
+		int y = 0;
+		
+		//gets a line from the file as a string
+		getline(fileIn, temp);
+		//converts the string into a string stream
+		inputStream << temp;
+		//uses string stream to break the string up into strings seperated by the | delimiter
+		while(getline(inputStream,word,'|')){
+			//adds each entry to a vector
+			order.push_back(word);
+		}
+		//checks if the order numbers match
+		if(orderNum.compare(order[0]) == 0){
+			ClearScreen();	//clears the screen and displays order info
+			cout << "Order Number: " << order[0] << endl;
+			cout << "Package Location: " << order[2] << endl;
+			cout << "Order Status: " << order[5] << endl;
+			cout <<"Press any key to continue";
+			cin.ignore();
 			return;
 		}
-		
 	}
-	
+
 	fileIn.close();
+	return;
 }
 
 void Admin::updateOrder(string orderNum) {

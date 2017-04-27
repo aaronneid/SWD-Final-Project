@@ -1,2 +1,3 @@
-Order_Number Customer_Name Current_Location Destination_Location Courier_Name Status
-12345 Mark St.Louis Columbia Fred uncomplete 
+Order Number|Customer Name|Current Location|Destination Location|Courier Name|Status|
+12345|Mark Doe|St.Louis|Columbia|Fred Chill|In Transit|
+111|John Guy|Las Vegas|Washington, D.C.|Bill Courier|Delivered|
