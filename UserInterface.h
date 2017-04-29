@@ -21,6 +21,7 @@ void UI::display(Admin ad){
 	int choice = -1;
 	string orderNum;
 	ClearScreen();
+	cout << "Welcome " << ad.username << "!" << endl;
 	cout << "You Have Logged In As An Administrator" << endl;
 	
 	while(choice != 0){
@@ -46,11 +47,25 @@ void UI::display(Admin ad){
 				cout << "Please input an order number for tracking: ";
 				getline(cin,orderNum);
 				ad.trackOrder(orderNum);
-				ClearScreen();
+				//current issue - runs even if order doesnt exist
+				cout <<"(1) Update this order" << endl << "(2) Continue" << endl;
+				cout << endl << "> ";		
+				cin >> choice;
+				cin.ignore();
+				if(choice == 1)
+					ad.updateOrder(orderNum);
+				else
+					ClearScreen();
 				break;
 			case 2:
 				ClearScreen();
-
+				cout << "Update Order:" << endl;
+				cout << "Please input an order number for updating: ";
+				getline(cin,orderNum);
+				ad.updateOrder(orderNum);
+				cout <<"Press any key to continue";
+				cin.ignore();
+				ClearScreen();
 				break;
 			case 3:
 				ClearScreen();
@@ -82,6 +97,7 @@ void UI::display(Courier cr){
 	int choice = -1;
 	string orderNum;
 	ClearScreen();
+		cout << "Welcome " << cr.username << "!" << endl;
 	cout << "You Have Logged In As An Courier" << endl;
 		
 	while(choice != 0){
@@ -100,10 +116,22 @@ void UI::display(Courier cr){
 				cout << "Please input an order number for tracking: ";
 				getline(cin,orderNum);
 				cr.trackOrder(orderNum);
+				cout <<"Press any key to continue";
+				cin.ignore();
+				if(choice == 1)
+					cr.updateOrder(orderNum);
+				else
+					ClearScreen();
 				break;
 			case 2:
 				ClearScreen();
-
+				cout << "Update Order:" << endl;
+				cout << "Please input an order number for updating: ";
+				getline(cin,orderNum);
+				cr.updateOrder(orderNum);
+				cout <<"Press any key to continue";
+				cin.ignore();
+				ClearScreen();
 				break;
 			case 3:
 				ClearScreen();
@@ -119,6 +147,7 @@ void UI::display(Customer cu){
 	int choice = -1;
 	string orderNum;
 	ClearScreen();
+		cout << "Welcome " << cu.username << "!" << endl;
 	cout << "Thank You For Logging Into The Mojave Express Courier System." << endl;
 		
 	while(choice != 0){
@@ -136,6 +165,9 @@ void UI::display(Customer cu){
 				cout << "Please input an order number for tracking: ";
 				getline(cin,orderNum);
 				cu.trackOrder(orderNum);
+				cout <<"Press any key to continue";
+				cin.ignore();
+				ClearScreen();
 				break;
 			case 2:
 				ClearScreen();

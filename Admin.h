@@ -13,7 +13,10 @@ class Admin{
 		void packagesInTransit();
 		void CouriersInTransit();
 		
-	public: 
+	public:
+		string username;
+		string password;
+	
 		Admin();
 		~Admin();
 		void trackOrder(string orderNum);
@@ -26,7 +29,7 @@ Admin::Admin(){
 }
 
 void Admin::trackOrder(string orderNum){
-	string word;
+	string word,temp;
 
 	ifstream fileIn("Orders.txt");
 	if(fileIn.fail()){
@@ -35,14 +38,14 @@ void Admin::trackOrder(string orderNum){
 	} else
 		
 	//implicit call to good
-	while(fileIn){
+	while(getline(fileIn, temp)){
 		stringstream inputStream;
-		string temp;
+//string temp;
 		vector<string> order;
 		int y = 0;
 		
 		//gets a line from the file as a string
-		getline(fileIn, temp);
+//getline(fileIn, temp);
 		//converts the string into a string stream
 		inputStream << temp;
 		//uses string stream to break the string up into strings seperated by the | delimiter
@@ -56,8 +59,6 @@ void Admin::trackOrder(string orderNum){
 			cout << "Order Number: " << order[0] << endl;
 			cout << "Package Location: " << order[2] << endl;
 			cout << "Order Status: " << order[5] << endl;
-			cout <<"Press any key to continue";
-			cin.ignore();
 			return;
 		}
 	}
@@ -82,7 +83,8 @@ void Admin::updateOrder(string orderNum) {
 
 	while(1) {
             string input;
-	cout << "What action would you like to perform?" <<
+			ClearScreen();
+	cout << "What action would you like to perform?" << "\nOrder Number: " << orderNum <<
 		"\n[0] Remove Order" << "\n[1] Update Order Location" << endl;
             getline(cin, input);
             stringstream stream(input);
