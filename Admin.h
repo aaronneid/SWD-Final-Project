@@ -12,7 +12,7 @@ using namespace std;
 
 class Admin{
 	public:
-		void addCustomer();
+		void addUser();
 		void addOrder();
 		void viewActiveCustomers();
 		void packagesInTransit();
@@ -25,7 +25,7 @@ class Admin{
 		Admin();
 		~Admin();
 		void trackOrder(string orderNum);
-        void updateOrder(string orderNum);
+                void updateOrder(string orderNum);
 };
 
 
@@ -45,12 +45,8 @@ void Admin::trackOrder(string orderNum){
 	//implicit call to good
 	while(getline(fileIn, temp)){
 		stringstream inputStream;
-//string temp;
 		vector<string> order;
 		int y = 0;
-		
-		//gets a line from the file as a string
-//getline(fileIn, temp);
 		//converts the string into a string stream
 		inputStream << temp;
 		//uses string stream to break the string up into strings seperated by the | delimiter
@@ -89,13 +85,11 @@ void Admin::updateOrder(string orderNum) {
 	
 	//each order in entry in vector 'order'
 	while(getline(fileIn, line)) {
-            //cout << "test";
                 stringstream inputStream;
 		inputStream << line;
                 vector<string> vTemp;
 		while(getline(inputStream, sTemp, '|')) {
 			vTemp.push_back(sTemp);
-                        //cout << vTemp[0] << endl;
                 }
 		if((vTemp[0].compare(orderNum)) == 0) {
                     new_order = vTemp;
@@ -146,6 +140,30 @@ void Admin::updateOrder(string orderNum) {
 	
 	fileIn.close();
         fileOut.close();
+}
+
+void Admin::addUser() {
+    string name, pass, rank;
+    int choice;
+    ofstream fileOut("Authentication.txt", ios::app);
+    fileOut << '\n';
+    cout << "Adding: \n(0) Admin \n(1) Courier \n(2) Customer" << endl;
+    cin >> choice;
+    cin.ignore();
+    cout << "Enter name of user: \n";
+    getline(cin, name);
+    cout << "\nEnter password of user: \n";
+    getline(cin, pass);
+    cout << "\nEnter user's rank: \n";
+    if(choice == 0) rank = "admin";
+    if(choice == 1) rank = "courier";
+    if(choice == 2) rank = "customer";
+    fileOut << name << '|' << pass << '|' << rank << '|';
+    fileOut.close();
+}
+   
+void Admin::addOrder() {
+    
 }
 
 Admin::~Admin(){
