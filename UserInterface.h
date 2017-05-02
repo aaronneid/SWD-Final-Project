@@ -33,7 +33,7 @@ void UI::display(Admin ad){
 		cout << "(4) View Packages In Transit" << endl;
 		cout << "(5) View Couriers In Transit" << endl;
 		cout << endl << "<------ Admin Functions ------>"<< endl;
-		cout << "(6) Add A New Customer" << endl;
+		cout << "(6) Add A New User" << endl;
 		cout << "(7) Add A New Order" << endl;
 		
 		cout << endl << "> ";		
@@ -69,15 +69,27 @@ void UI::display(Admin ad){
 				break;
 			case 3:
 				ClearScreen();
-
+				cout << "Customers with Active Orders: " << endl << endl;
+				ad.viewActiveCustomers();
+				cout <<"Press any key to continue";
+				cin.get();
+				ClearScreen();
 				break;
 			case 4:
 				ClearScreen();
-
+				cout << "Packages In Transit:" << endl << endl;
+				ad.packagesInTransit();
+				cout <<"Press any key to continue";
+				cin.get();
+				ClearScreen();
 				break;
 			case 5:
 				ClearScreen();
-
+				cout << "Couriers In Transit:" << endl;
+				ad.couriersInTransit();
+				cout <<"Press any key to continue";
+				cin.get();
+				ClearScreen();
 				break;
 			case 6:
 				ClearScreen();

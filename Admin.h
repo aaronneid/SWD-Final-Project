@@ -1,9 +1,4 @@
 #include"Miscellaneous.h"
-#include <iostream>
-#include <vector>
-#include <string>
-#include <cctype>
-#include <limits>
 
 #ifndef __Admin_h_INCLUDED__
 #define __Admin_h_INCLUDED__
@@ -16,7 +11,7 @@ class Admin{
 		void addOrder();
 		void viewActiveCustomers();
 		void packagesInTransit();
-		void CouriersInTransit();
+		void couriersInTransit();
 		
 	public:
 		string username;
@@ -24,8 +19,8 @@ class Admin{
 	
 		Admin();
 		~Admin();
-		void trackOrder(string orderNum);
-                void updateOrder(string orderNum);
+		void trackOrder(string orderNum);		
+        void updateOrder(string orderNum);
 };
 
 
@@ -33,40 +28,6 @@ Admin::Admin(){
 	
 }
 
-void Admin::trackOrder(string orderNum){
-	string word,temp;
-
-	ifstream fileIn("Orders.txt");
-	if(fileIn.fail()){
-		cout << "No order tracking could be performed! File does not exist!" << endl;
-		exit(0);
-	} else
-		
-	//implicit call to good
-	while(getline(fileIn, temp)){
-		stringstream inputStream;
-		vector<string> order;
-		int y = 0;
-		//converts the string into a string stream
-		inputStream << temp;
-		//uses string stream to break the string up into strings seperated by the | delimiter
-		while(getline(inputStream,word,'|')){
-			//adds each entry to a vector
-			order.push_back(word);
-		}
-		//checks if the order numbers match
-		if(orderNum.compare(order[0]) == 0){
-			ClearScreen();	//clears the screen and displays order info
-			cout << "Order Number: " << order[0] << endl;
-			cout << "Package Location: " << order[2] << endl;
-			cout << "Order Status: " << order[5] << endl;
-			return;
-		}
-	}
-
-	fileIn.close();
-	return;
-}
 
 void Admin::updateOrder(string orderNum) {
 	string line, new_location, sTemp, input;
@@ -161,10 +122,181 @@ void Admin::addUser() {
     fileOut << name << '|' << pass << '|' << rank << '|';
     fileOut.close();
 }
-   
-void Admin::addOrder() {
-    
+
+void Admin::trackOrder(string orderNum){
+	string word,temp;
+
+	ifstream fileIn("Orders.txt");
+	if(fileIn.fail()){
+		cout << "No order tracking could be performed! File does not exist!" << endl;
+		exit(0);
+	} else
+		
+	//implicit call to good
+	while(getline(fileIn, temp)){
+		stringstream inputStream;
+		vector<string> order;
+		int y = 0;
+	
+		//converts the string into a string stream
+		inputStream << temp;
+		//uses string stream to break the string up into strings seperated by the | delimiter
+		while(getline(inputStream,word,'|')){
+			//adds each entry to a vector
+			order.push_back(word);
+		}
+		//checks if the order numbers match
+		if(orderNum.compare(order[0]) == 0){
+			ClearScreen();	//clears the screen and displays order info
+			cout << "Order Number: " << order[0] << endl;
+			cout << "Package Location: " << order[2] << endl;
+			cout << "Order Status: " << order[5] << endl;
+			return;
+		}
+	}
+
+	fileIn.close();
+	return;
 }
+
+void Admin::packagesInTransit(){
+	string word,temp;
+	vector< vector<string> > activeOrders;
+	vector<string> setup;
+	boolean copied = false;
+
+	ifstream fileIn("Orders.txt");
+	if(fileIn.fail()){
+		cout << "No order tracking could be performed! File does not exist!" << endl;
+		exit(0);
+	} else
+		
+	//implicit call to good
+	while(getline(fileIn, temp)){
+		stringstream inputStream;
+		vector<string> order;
+		int y = 0;
+		
+		//converts the string into a string stream
+		inputStream << temp;
+		
+		//uses string stream to break the string up into strings seperated by the | delimiter
+		while(getline(inputStream,word,'|')){
+			//adds each entry to a vector
+			order.push_back(word);
+		}
+		//checks if the order is still in transit
+		if(order[5].compare("In Transit") == 0){
+			activeOrders.push_back(order);
+		}
+		
+		if(!copied)
+			setup = order;
+		copied = true;
+	}
+	
+	//only works in half screen terminal right now
+	cout <<"    ";
+	for(int y = 0; y < setup.size(); y++){
+			cout << left  << setw(20) << setup[y];
+	}
+	for(int i = 0; i < activeOrders.size(); i++){
+		cout << endl << "(" << i+1 << ") ";
+		for(int y = 0; y < activeOrders[i].size(); y++){
+			cout << left  << setw(20) << activeOrders[i][y];
+		}
+	}
+
+	cout << endl;
+	fileIn.close();
+	return;	
+}
+
+
+void Admin::couriersInTransit(){
+	string word,temp;
+	vector<string> couriers;
+	vector<string> setup;
+
+	ifstream fileIn("Orders.txt");
+	if(fileIn.fail()){
+		cout << "No order tracking could be performed! File does not exist!" << endl;
+		exit(0);
+	} else
+		
+	//implicit call to good
+	while(getline(fileIn, temp)){
+		stringstream inputStream;
+		vector<string> order;
+		int y = 0;
+		
+		//converts the string into a string stream
+		inputStream << temp;
+		
+		//uses string stream to break the string up into strings seperated by the | delimiter
+		while(getline(inputStream,word,'|')){
+			//adds each entry to a vector
+			order.push_back(word);
+		}
+		//checks if the order is still in transit
+		if(order[5].compare("In Transit") == 0){
+			if(find(couriers.begin(), couriers.end(), order[4]) == couriers.end())
+			couriers.push_back(order[4]);
+		}
+		
+	}
+	
+	for(int i = 0; i < couriers.size(); i++){
+		cout << "(" << i+1 << ") " << couriers[i] << endl;
+	}
+
+	cout << endl;
+	fileIn.close();
+	return;	
+}
+
+void Admin::viewActiveCustomers(){
+	string word,temp;
+	vector<string> customers;
+	vector<string> setup;
+
+	ifstream fileIn("Orders.txt");
+	if(fileIn.fail()){
+		cout << "No order tracking could be performed! File does not exist!" << endl;
+		exit(0);
+	} else
+		
+	//implicit call to good
+	while(getline(fileIn, temp)){
+		stringstream inputStream;
+		vector<string> order;
+		int y = 0;
+		
+		//converts the string into a string stream
+		inputStream << temp;
+		
+		//uses string stream to break the string up into strings seperated by the | delimiter
+		while(getline(inputStream,word,'|')){
+			//adds each entry to a vector
+			order.push_back(word);
+		}
+		//checks if the order is still in transit
+		if(order[5].compare("In Transit") == 0){
+			if(find(customers.begin(), customers.end(), order[1]) == customers.end())
+			customers.push_back(order[1]);
+		}
+		
+	}
+	
+	for(int i = 0; i < customers.size(); i++){
+		cout << "(" << i+1 << ") " << customers[i] << endl;
+	}
+
+	cout << endl;
+	fileIn.close();
+	return;	
+}
+
 
 Admin::~Admin(){
 	
