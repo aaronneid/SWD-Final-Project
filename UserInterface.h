@@ -111,11 +111,19 @@ void UI::display(Admin ad){
 				break;
 			case 6:
 				ClearScreen();
-
+				cout << "Add a New User:" << endl;
+				ad.addUser();
+				cout <<"Press any key to continue";
+				cin.get();
+				ClearScreen();
 				break;
 			case 7:
 				ClearScreen();
-
+				cout << "Add a New Order:" << endl;
+				ad.addOrder();
+				cout <<"Press any key to continue";
+				cin.get();
+				ClearScreen();
 				break;
 			default:
 				ClearScreen();
