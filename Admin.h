@@ -203,11 +203,13 @@ void Admin::trackOrder(string orderNum){
 			cout << "Order Number: " << order[0] << endl;
 			cout << "Package Location: " << order[2] << endl;
 			cout << "Order Status: " << order[5] << endl;
+			fileIn.close();
 			return;
 		}
 	}
 
 	fileIn.close();
+	throw "That order number could not be found!\n";
 	return;
 }
 

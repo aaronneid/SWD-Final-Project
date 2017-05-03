@@ -16,7 +16,6 @@ Courier::Courier(){
 	
 }
 
-//unfinished
 void Courier::getHistory(){
 string word,temp;
 	vector< vector<string> > history;

@@ -36,17 +36,35 @@ void UI::display(Admin ad){
 		cout << "(6) Add A New User" << endl;
 		cout << "(7) Add A New Order" << endl;
 		
+
 		cout << endl << "> ";		
 		cin >> choice;
 		cin.ignore();
+		while(cin.fail()){
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');
+			cout << endl << "That was not a valid input, please only input valid menu numbers." << endl;;
+			cout << endl << "> ";	
+			cin >> choice;
+			cin.ignore();
+		}
+
 	
 		switch(choice){
+			case 0:
+				ClearScreen();
+				return;
 			case 1:
 				ClearScreen();
 				cout << "Order Tracking:" << endl;
 				cout << "Please input an order number for tracking: ";
 				getline(cin,orderNum);
-				ad.trackOrder(orderNum);
+				try{
+					ad.trackOrder(orderNum);
+				}catch(const char * error){
+					cout << error;
+					break;
+				}
 				//current issue - runs even if order doesnt exist
 				cout <<"(1) Update this order" << endl << "(2) Continue" << endl;
 				cout << endl << "> ";		
@@ -100,6 +118,8 @@ void UI::display(Admin ad){
 
 				break;
 			default:
+				ClearScreen();
+				cout << "That was not a valid input, please only input valid menu numbers." << endl;
 				break;
 		}
 	}
@@ -118,18 +138,45 @@ void UI::display(Courier cr){
 		cout << "(1) Track Order" << endl;
 		cout << "(2) Update Order" << endl;
 		cout << "(3) View Delivery History" << endl;
+		
+		cout << endl << "> ";		
 		cin >> choice;
 		cin.ignore();
+		while(cin.fail()){
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');
+			cout << endl << "That was not a valid input, please only input valid menu numbers." << endl;;
+			cout << endl << "> ";	
+			cin >> choice;
+			cin.ignore();
+		}
 	
 		switch(choice){
+			case 0:
+				ClearScreen();
+				return;
 			case 1:
 				ClearScreen();
 				cout << "Order Tracking:" << endl;
 				cout << "Please input an order number for tracking: ";
 				getline(cin,orderNum);
-				cr.trackOrder(orderNum);
-				cout <<"Press any key to continue";
+				try{
+					cr.trackOrder(orderNum);
+				}catch(const char * error){
+					cout << error;
+					break;
+				}
+				cout <<"(1) Update this order" << endl << "(2) Continue" << endl;
+				cin >> choice;
 				cin.ignore();
+				while(cin.fail()){
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(),'\n');
+					cout << endl << "That was not a valid input, please only input valid menu numbers." << endl;;
+					cout << endl << "> ";	
+					cin >> choice;
+					cin.ignore();
+				}
 				if(choice == 1)
 					cr.updateOrder(orderNum);
 				else
@@ -154,6 +201,8 @@ void UI::display(Courier cr){
 				ClearScreen();
 				break;
 			default:
+				ClearScreen();
+				cout << "That was not a valid input, please only input valid menu numbers." << endl;
 				break;
 		}
 	}
@@ -171,9 +220,19 @@ void UI::display(Customer cu){
 		cout << "(1) Track Order" << endl;
 		cout << "(2) View Order History" << endl;
 		cout << "(3) Logout Of System" << endl;
+		
+		cout << endl << "> ";		
 		cin >> choice;
 		cin.ignore();
-	
+		while(cin.fail()){
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');
+			cout << endl << "That was not a valid input, please only input valid menu numbers." << endl;;
+			cout << endl << "> ";	
+			cin >> choice;
+			cin.ignore();
+		}
+
 		switch(choice){
 			case 1:
 				ClearScreen();
@@ -193,7 +252,12 @@ void UI::display(Customer cu){
 				cin.ignore();
 				ClearScreen();
 				break;
+			case 3:
+				ClearScreen();
+				return;
 			default:
+				ClearScreen();
+				cout << "That was not a valid input, please only input valid menu numbers." << endl;
 				break;
 		}
 	}

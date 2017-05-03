@@ -1,5 +1,5 @@
 //============================================================================
-// Software Development Final Project First Iteration
+// Software Development Final Project
 // Description - Courier Tracking Program
 //============================================================================
 #include<iostream>
@@ -13,6 +13,7 @@
 #include<stdio.h>
 #include<iomanip>
 #include<algorithm>
+#include<limits>
 
 #include"Admin.h"
 #include"Courier.h"
@@ -24,6 +25,7 @@
 using namespace std;
 
  int main(){
+	ClearScreen();
 	string user;
 	string pass;
 	int log;
@@ -33,7 +35,11 @@ using namespace std;
 	cout << "Please Enter Your Password: ";
 	getline(cin,pass);
 	
-	log = login(user,pass);
+	try{
+		log = login(user,pass);
+	}catch(const char* loginError){
+		cout << loginError << endl;
+	}
 	
 	return 1;
  }

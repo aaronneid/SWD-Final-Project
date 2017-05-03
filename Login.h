@@ -8,8 +8,7 @@ int login(string name, string password){
 	
 	ifstream fileIn("Authentication.txt");
 	if(fileIn.fail()){
-		cout << "No Authentication could be performed! File does not exist!" << endl;
-		exit(0);
+		throw "No Authentication could be performed! File does not exist!";
 	}
 	
 	//gets a line from the file as a string
@@ -27,6 +26,7 @@ int login(string name, string password){
 			//adds each entry to a vector
 			account.push_back(word);
 		}
+		
 		//checks if a valid login has been entered
 		if(!name.compare(account[0]) && !password.compare(account[1])){
 			//checks for the rank of the user
@@ -36,6 +36,7 @@ int login(string name, string password){
 				admin.username = account[0];
 				admin.password = account[1];
 				ui.display(admin);
+				fileIn.close();
 				return 1;
 			}
 			if(!account[2].compare("courier")){
@@ -44,6 +45,7 @@ int login(string name, string password){
 				courier.username = account[0];
 				courier.password = account[1];
 				ui.display(courier);
+				fileIn.close();
 				return 2;
 			}
 			if(!account[2].compare("customer")){
@@ -52,12 +54,17 @@ int login(string name, string password){
 				customer.username = account[0];
 				customer.password = account[1];
 				ui.display(customer);
+				fileIn.close();
 				return 3;
 			}
 		}
+
 	}
 	
+	throw "No user could be found with that username and password.";
+	
 	fileIn.close();
+	throw;
 	return -1;	
  }
 
