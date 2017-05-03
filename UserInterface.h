@@ -147,8 +147,12 @@ void UI::display(Courier cr){
 				break;
 			case 3:
 				ClearScreen();
-
-				break;	
+				cout << "Order History:" << endl;
+				cr.getHistory();
+				cout <<"Press any key to continue";
+				cin.ignore();
+				ClearScreen();
+				break;
 			default:
 				break;
 		}
@@ -183,7 +187,12 @@ void UI::display(Customer cu){
 				break;
 			case 2:
 				ClearScreen();
-				break;	
+				cout << "Order History:" << endl;
+				cu.getHistory();
+				cout <<"Press any key to continue";
+				cin.ignore();
+				ClearScreen();
+				break;
 			default:
 				break;
 		}

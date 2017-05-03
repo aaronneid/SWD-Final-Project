@@ -12,15 +12,14 @@ int login(string name, string password){
 		exit(0);
 	}
 	
-//while(fileIn){
+	//gets a line from the file as a string
 	while(getline(fileIn, temp)){
 		stringstream inputStream;
-//string temp;
 		vector<string> account;
 		int y = 0;
 		
 		//gets a line from the file as a string
-//getline(fileIn, temp);
+
 		//converts the string into a string stream
 		inputStream << temp;
 		//uses string stream to break the string up into strings seperated by the | delimiter
@@ -34,12 +33,6 @@ int login(string name, string password){
 			if(!account[2].compare("admin")){
 				fileIn.close();
 				Admin admin;
-				/*
-				cout <<"Given:" << endl;
-				cout <<"User: " << name << endl << "pass: " << password << endl;
-				cout << "taken: " << endl;
-				cout <<"User: " << account[0] << endl << "pass: " << account[1] << endl;
-				*/
 				admin.username = account[0];
 				admin.password = account[1];
 				ui.display(admin);

@@ -1,5 +1,6 @@
 Name|Password|Rank|
 admin|123|admin|
 courier|1234|courier|
-customer|12345|customer|
+Mark Doe|12345|customer|
 Aaron Neidlinger|password|admin|
+Fred Chill|pass|courier|

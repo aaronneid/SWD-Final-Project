@@ -2,7 +2,6 @@
 // Software Development Final Project First Iteration
 // Description - Courier Tracking Program
 //============================================================================
-
 #include<iostream>
 #include<string>
 #include<sstream>
@@ -12,6 +11,8 @@
 #include<vector>
 #include<stdlib.h>
 #include<stdio.h>
+#include<iomanip>
+#include<algorithm>
 
 #include"Admin.h"
 #include"Courier.h"
