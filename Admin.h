@@ -80,7 +80,7 @@ void Admin::addOrder() {
         
     //if user found and is customer
         cout << "Order Successfully Added!\n" << endl;
-    fileOut << '\n' << orderNum << '|' << name << '|' << curLoc << '|' << destLoc << '|' << courName << '|' << "In Transit";
+    fileOut << '\n' << orderNum << '|' << name << '|' << curLoc << '|' << destLoc << '|' << courName << '|' << "In Transit" << '|';
 }
 void Admin::updateOrder(string orderNum) {
 	string line, new_location, sTemp, input;
