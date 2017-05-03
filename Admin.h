@@ -28,7 +28,60 @@ Admin::Admin(){
 	
 }
 
+void Admin::addOrder() {
+    string name, curLoc, destLoc, courName, status, line, temp;
+    int orderNum;
+    vector<string> customerList;
+    vector<string> courierList;
+    vector<string> name_match;
+    ifstream fileIn("Authentication.txt");
+    ofstream fileOut("Orders.txt", ios::app);
+    srand(time(NULL));
+    orderNum = rand() % 10000000 + 99999999;
+    cout << "Enter current location of parcel: ";
+    getline(cin, curLoc);
+    cout << "Enter destination location: ";
+    getline(cin, destLoc);
 
+    //read in all names to compare
+    while (getline(fileIn, line)) {
+        stringstream inputStream;
+        inputStream << line;
+        vector<string> vTemp;
+        while (getline(inputStream, temp, '|')) {
+            vTemp.push_back(temp);
+        }
+        if ((vTemp[2].compare("courier")) == 0) { //check if customer
+            courierList.push_back(vTemp[0]);
+        }
+        if((vTemp[2].compare("customer")) == 0) {
+            customerList.push_back(vTemp[0]);
+        }
+    }
+        cout << "Enter customer name: ";
+        while(getline(cin, name)) {
+            if(find(customerList.begin(), customerList.end(), name) != customerList.end()) {
+                break;
+            }
+            else {
+                cout << "Error, name not registered. Try again: ";
+            }
+        }
+        cout << "Enter courier name: ";
+        while(getline(cin, courName)) {
+            if(find(courierList.begin(), courierList.end(), courName) != courierList.end()) {
+                break;
+            }
+            else {
+                cout << "Error, courier not registered. Try again: ";
+            }
+        }
+        
+        
+    //if user found and is customer
+        cout << "Order Successfully Added!\n" << endl;
+    fileOut << '\n' << orderNum << '|' << name << '|' << curLoc << '|' << destLoc << '|' << courName << '|' << "In Transit";
+}
 void Admin::updateOrder(string orderNum) {
 	string line, new_location, sTemp, input;
 	int action;
@@ -37,7 +90,6 @@ void Admin::updateOrder(string orderNum) {
         vector<string> new_order;
         
 	ifstream fileIn("Orders.txt");
-	ofstream fileOut("Backup.txt");
 	
 	if(fileIn.fail()){
 		cout << "No order update could be performed! File does not exist!" << endl;
@@ -72,7 +124,7 @@ void Admin::updateOrder(string orderNum) {
 		}
 		else break;
 	}
-	
+	ofstream fileOut("Orders.txt");
 	if(action == 0) {
 		for(int k = 0; k < order.size(); k++) {
                     fileOut << order[k];
