@@ -28,17 +28,26 @@ using namespace std;
 	ClearScreen();
 	string user;
 	string pass;
-	int log;
+	int log,check = 0;
 	
-	cout << "Please Enter Your Username: ";
-	getline(cin,user);
-	cout << "Please Enter Your Password: ";
-	getline(cin,pass);
+	//allows the user three login attempts
+	while(check < 4){
+		//gets login info; this is case sensitive and uses the full name, however that was defined upon account creation as the username
+		cout << "Please Enter Your Username: ";
+		getline(cin,user);
+		cout << "Please Enter Your Password: ";
+		getline(cin,pass);
 	
-	try{
-		log = login(user,pass);
-	}catch(const char* loginError){
-		cout << loginError << endl;
+		try{
+			//tries to login
+			log = login(user,pass);
+		}catch(const char* loginError){
+			//displays error if login failed for any reason
+			cout << loginError << endl;
+			cout << "Please try again: " << endl;
+			check++;
+		}
+	
 	}
 	
 	return 1;

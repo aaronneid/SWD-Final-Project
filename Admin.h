@@ -16,6 +16,7 @@ class Admin{
 	public:
 		string username;
 		string password;
+		string rank;
 	
 		Admin();
 		~Admin();
@@ -25,12 +26,12 @@ class Admin{
 
 
 Admin::Admin(){
-	
+	rank = "admin";
 }
 
 void Admin::addOrder() {
     string name, curLoc, destLoc, courName, status, line, temp;
-    int orderNum;
+    int orderNum,check1,check2 = 0;
     vector<string> customerList;
     vector<string> courierList;
     vector<string> name_match;
@@ -51,34 +52,49 @@ void Admin::addOrder() {
         while (getline(inputStream, temp, '|')) {
             vTemp.push_back(temp);
         }
-        if ((vTemp[2].compare("courier")) == 0) { //check if customer
+        if ((vTemp[2].compare("courier")) == 0) { //used to check if courier
             courierList.push_back(vTemp[0]);
         }
-        if((vTemp[2].compare("customer")) == 0) {
+        if((vTemp[2].compare("customer")) == 0) {	//used to check if customer
             customerList.push_back(vTemp[0]);
         }
     }
+		//allows user to enter a customer name
         cout << "Enter customer name: ";
         while(getline(cin, name)) {
+			//checks if customer exists
             if(find(customerList.begin(), customerList.end(), name) != customerList.end()) {
                 break;
             }
             else {
+				//error if customer doesnt exist
                 cout << "Error, name not registered. Try again: ";
+				check1++;
+				//loop breaks if user repeatedly inputs a wrong name
+				if(check1 > 3){
+					cout << "Sorry, this doesn't seem to be working.  Please try again later." << endl;
+				}
             }
         }
+		//allows user to enter a courier name
         cout << "Enter courier name: ";
         while(getline(cin, courName)) {
+			//checks for valid courier
             if(find(courierList.begin(), courierList.end(), courName) != courierList.end()) {
                 break;
             }
             else {
+				//error if courier doesnt exist
                 cout << "Error, courier not registered. Try again: ";
+				check2++;
+				//loop breaks if user repeatedly inputs a wrong name
+				if(check2 > 3){
+					cout << "Sorry, this doesn't seem to be working.  Please try again later." << endl;
+				}
             }
         }
-        
-        
-    //if user found and is customer
+             
+    //adds order
         cout << "Order Successfully Added!\n" << endl;
     fileOut << '\n' << orderNum << '|' << name << '|' << curLoc << '|' << destLoc << '|' << courName << '|' << "In Transit" << '|';
 }
@@ -91,6 +107,7 @@ void Admin::updateOrder(string orderNum) {
         
 	ifstream fileIn("Orders.txt");
 	
+	//error if file doesnt exist
 	if(fileIn.fail()){
 		cout << "No order update could be performed! File does not exist!" << endl;
 		exit(0);
@@ -198,8 +215,13 @@ void Admin::trackOrder(string orderNum){
 			order.push_back(word);
 		}
 		//checks if the order numbers match
-		if(orderNum.compare(order[0]) == 0){
-			ClearScreen();	//clears the screen and displays order info
+		if(orderNum.compare(order[0]) == 0){	
+			//additional check for customers to make usre they can not track an order that does not belong to them
+			if(username.compare(order[1]) != 0 && rank.compare("customer") == 0){
+				cout  << "No order number could be found that is owned by you." << endl;
+				return;
+			}	
+			//ClearScreen();	//clears the screen and displays order info
 			cout << "Order Number: " << order[0] << endl;
 			cout << "Package Location: " << order[2] << endl;
 			cout << "Order Status: " << order[5] << endl;
@@ -209,6 +231,7 @@ void Admin::trackOrder(string orderNum){
 	}
 
 	fileIn.close();
+	//throws error if order didnt exist
 	throw "That order number could not be found!\n";
 	return;
 }
@@ -221,6 +244,7 @@ void Admin::packagesInTransit(){
 
 	ifstream fileIn("Orders.txt");
 	if(fileIn.fail()){
+		//error if file doesnt exist
 		cout << "No order tracking could be performed! File does not exist!" << endl;
 		exit(0);
 	} else
@@ -241,19 +265,22 @@ void Admin::packagesInTransit(){
 		}
 		//checks if the order is still in transit
 		if(order[5].compare("In Transit") == 0){
+			//adds the vector filed in last while loop to the 2 dimensional vector activeOrders
 			activeOrders.push_back(order);
 		}
-		
+		//creates a template for the output
 		if(!copied)
 			setup = order;
 		copied = true;
 	}
 	
-	//only works in half screen terminal right now
+	//sometimes formatting messes up here if in full screen terminal - no idea why
 	cout <<"    ";
+	//dispalys column names
 	for(int y = 0; y < setup.size(); y++){
 			cout << left  << setw(20) << setup[y];
 	}
+	//displays all the info row by row
 	for(int i = 0; i < activeOrders.size(); i++){
 		cout << endl << "(" << i+1 << ") ";
 		for(int y = 0; y < activeOrders[i].size(); y++){
@@ -274,6 +301,7 @@ void Admin::couriersInTransit(){
 
 	ifstream fileIn("Orders.txt");
 	if(fileIn.fail()){
+		//error if file doesnt exist
 		cout << "No order tracking could be performed! File does not exist!" << endl;
 		exit(0);
 	} else
@@ -294,12 +322,14 @@ void Admin::couriersInTransit(){
 		}
 		//checks if the order is still in transit
 		if(order[5].compare("In Transit") == 0){
+			//checks if courier name has already been recorded - makes list unique
 			if(find(couriers.begin(), couriers.end(), order[4]) == couriers.end())
-			couriers.push_back(order[4]);
+				couriers.push_back(order[4]);
 		}
 		
 	}
 	
+	//dispalys recorded info
 	for(int i = 0; i < couriers.size(); i++){
 		cout << "(" << i+1 << ") " << couriers[i] << endl;
 	}
@@ -316,6 +346,7 @@ void Admin::viewActiveCustomers(){
 
 	ifstream fileIn("Orders.txt");
 	if(fileIn.fail()){
+		//error if file doesnt exist
 		cout << "No order tracking could be performed! File does not exist!" << endl;
 		exit(0);
 	} else
@@ -336,12 +367,14 @@ void Admin::viewActiveCustomers(){
 		}
 		//checks if the order is still in transit
 		if(order[5].compare("In Transit") == 0){
+			//checks if customers name has already been recorded - makes list unique
 			if(find(customers.begin(), customers.end(), order[1]) == customers.end())
-			customers.push_back(order[1]);
+				customers.push_back(order[1]);
 		}
 		
 	}
 	
+	//displays recorded info
 	for(int i = 0; i < customers.size(); i++){
 		cout << "(" << i+1 << ") " << customers[i] << endl;
 	}

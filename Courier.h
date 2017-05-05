@@ -13,7 +13,7 @@ class Courier : public Admin {
 };
 
 Courier::Courier(){
-	
+	rank = "courier";
 }
 
 void Courier::getHistory(){
@@ -24,10 +24,12 @@ string word,temp;
 
 	ifstream fileIn("Orders.txt");
 	if(fileIn.fail()){
+		//error if file doesnt exist
 		cout << "No order tracking could be performed! File does not exist!" << endl;
 		exit(0);
 	} else
 		
+	//implicit call to good
 	while(getline(fileIn, temp)){
 		stringstream inputStream;
 		vector<string> order;
@@ -41,18 +43,21 @@ string word,temp;
 			//adds each entry to a vector
 			order.push_back(word);
 		}
-		//checks 
+		//checks if the order belongs to the current courier
 		if(order[4].compare(username) == 0){
 			history.push_back(order);
 		}
 		
+		//creates template
 		if(!copied)
 			setup = order;
 		copied = true;
 	}
 	
-	//only works in half screen terminal right now
+	//sometimes formatting messes up here if in full screen terminal - no idea why
+	//dispalys column names
 	cout << "    " << left << setw(20) << setup[0] << setw(20) << setup[3] << setw(20) << setup[5] << endl;
+	//displays all the info row by row
 	for(int i = 0; i < history.size(); i++){
 		cout << endl << "(" << i+1 << ") " << setw(20)
 		<< history[i][0]<< setw(20) << history[i][3]<< setw(20) << history[i][5];

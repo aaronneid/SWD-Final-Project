@@ -8,6 +8,7 @@ int login(string name, string password){
 	
 	ifstream fileIn("Authentication.txt");
 	if(fileIn.fail()){
+		//throws error if authentication file could not be opened
 		throw "No Authentication could be performed! File does not exist!";
 	}
 	
@@ -16,12 +17,10 @@ int login(string name, string password){
 		stringstream inputStream;
 		vector<string> account;
 		int y = 0;
-		
-		//gets a line from the file as a string
 
 		//converts the string into a string stream
 		inputStream << temp;
-		//uses string stream to break the string up into strings seperated by the | delimiter
+		//uses string stream and getline to break the string up into strings seperated by the | delimiter
 		while(getline(inputStream,word,'|')){
 			//adds each entry to a vector
 			account.push_back(word);
@@ -61,10 +60,9 @@ int login(string name, string password){
 
 	}
 	
-	throw "No user could be found with that username and password.";
-	
 	fileIn.close();
-	throw;
+	//throws error if there is no matching info in the authentication file
+	throw "No user could be found with that username and password.";
 	return -1;	
  }
 
