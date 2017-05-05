@@ -184,7 +184,6 @@ void Admin::addUser() {
     getline(cin, name);
     cout << "\nEnter password of user: \n";
     getline(cin, pass);
-    cout << "\nEnter user's rank: \n";
     if(choice == 0) rank = "admin";
     if(choice == 1) rank = "courier";
     if(choice == 2) rank = "customer";
